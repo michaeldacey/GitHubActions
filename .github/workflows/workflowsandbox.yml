@@ -65,7 +65,7 @@ jobs:
         
   job4:
     name: 'Environment variable test job'
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     env:
       JOB_HELLO: 'Ciao'
     steps:
