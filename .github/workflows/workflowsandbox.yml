@@ -70,8 +70,8 @@ jobs:
       JOB_HELLO: 'Ciao'
     steps:
       - run: |
-          echo "Workflow variable value is ${{WORKFLOW_HELLO}}"
-          echo "Job environment variable value is ${{env.JOB_HELLO}}"
-          echo "Step environment variable value is ${{env.STEP_HELLO}}"
+          echo "Workflow variable value is $WORKFLOW_HELLO"
+          echo "Job environment variable value is $JOB_HELLO"
+          echo "Step environment variable value is $STEP_HELLO"
         env:
           STEP_HELLO: 'Hola'        
