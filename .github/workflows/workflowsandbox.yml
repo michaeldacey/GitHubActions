@@ -74,4 +74,17 @@ jobs:
           echo "Job environment variable value is $JOB_HELLO"
           echo "Step environment variable value is $STEP_HELLO"
         env:
-          STEP_HELLO: 'Hola'        
+          STEP_HELLO: 'Hola'   
+
+  job4_windows:
+    name: 'Environment variable test job for Windows'
+    runs-on: windows-latest
+    env:
+      JOB_HELLO: 'Ciao'
+    steps:
+      - run: |
+          echo "Workflow variable value is $env:WORKFLOW_HELLO"
+          echo "Job environment variable value is $env:JOB_HELLO"
+          echo "Step environment variable value is $env:STEP_HELLO"
+        env:
+          STEP_HELLO: 'Hola'            
