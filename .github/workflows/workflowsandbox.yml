@@ -97,10 +97,6 @@ jobs:
       - name: Set the NAME env variable
         run: echo "NAME=Fred Bloggs" >> $GITHUB_ENV
 
-  get_envvar:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
       - name: Get the NAME env variable value
         run: echo "The NAME value is ${{ env.NAME }}"         
           
