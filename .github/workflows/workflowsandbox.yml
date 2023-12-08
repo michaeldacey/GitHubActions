@@ -15,6 +15,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  WORKFLOW_HELLO: 'Hello'
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -59,3 +62,17 @@ jobs:
       - uses: actions/checkout@v3
       - name: Job 3 echo hello
         run: echo Hello, world! 
+        
+  job4:
+    name: 'Environment variable test job'
+    runs-on: windows-latest
+    env:
+      JOB_HELLO: 'Ciao'
+    steps:
+      env:
+        STEP_HELLO: 'Hola'
+      - run: |
+          echo "Workflow variable value is ${{WORKFLOW_HELLO}}"
+          echo "Job environment variable value is ${{env.JOB_HELLO}}"
+          echo "Step environment variable value is ${{env.STEP_HELLO}}"
+         
