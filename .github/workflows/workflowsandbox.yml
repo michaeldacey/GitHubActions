@@ -36,3 +36,26 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Job 1 echo hello
+        run: echo Hello, world! 
+        
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Job 2 echo hello
+        run: echo Hello, world!  
+        
+  job3:
+    needs: [job1, job2]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Job 3 echo hello
+        run: echo Hello, world! 
