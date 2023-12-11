@@ -106,3 +106,24 @@ jobs:
       - name: Printout the environment variables
         run: env   
           
+  display_secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Printout the secret value
+        run: echo "This is the secret value ${{ secrets.MY_SECRET }}"  
+      - name: Printout the secret as environment variable
+        run: echo "This is TOP_SECRET $TOP_SECRET"
+        env:
+          TOP_SECRET: ${{ secrets.MY_SECRET }}
+          
+  share_secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Store a secret so it can be used by other steps in this job
+        run: |
+          SOME_SECRET=$((RANDOM))
+          echo "::add-mask::$SOME_SECRET"
+          echo SOME_SECRET=$SOME_SECRET >> $GITHUB_ENV
+      - name: Printout the secret from the previous job
+        run: echo "This is SOME_SECRET $SOME_SECRET"
+ 
