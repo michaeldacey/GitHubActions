@@ -99,4 +99,10 @@ jobs:
 
       - name: Get the NAME env variable value
         run: echo "The NAME value is ${{ env.NAME }}"         
+        
+  print_unix_envvars:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Printout the environment variables
+        run: env   
           
