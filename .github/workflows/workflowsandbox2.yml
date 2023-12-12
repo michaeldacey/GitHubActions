@@ -1,0 +1,152 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'src/**'
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  WORKFLOW_HELLO: 'Hello'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Job 1 echo hello
+        run: echo Hello, world! 
+        
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Job 2 echo hello
+        run: echo Hello, world!  
+        
+  job3:
+    needs: [job1, job2]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Job 3 echo hello
+        run: echo Hello, world! 
+        
+  job4:
+    name: 'Environment variable test job'
+    runs-on: ubuntu-latest
+    env:
+      JOB_HELLO: 'Ciao'
+    steps:
+      - run: |
+          echo "Workflow variable value is $WORKFLOW_HELLO"
+          echo "Job environment variable value is $JOB_HELLO"
+          echo "Step environment variable value is $STEP_HELLO"
+        env:
+          STEP_HELLO: 'Hola'   
+
+  job4_windows:
+    name: 'Environment variable test job for Windows'
+    runs-on: windows-latest
+    env:
+      JOB_HELLO: 'Ciao'
+    steps:
+      - run: |
+          echo "Workflow variable value is $env:WORKFLOW_HELLO"
+          echo "Job environment variable value is $env:JOB_HELLO"
+          echo "Step environment variable value is $env:STEP_HELLO"
+        env:
+          STEP_HELLO: 'Hola' 
+
+
+  set_envvar: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set the NAME env variable
+        run: echo "NAME=Fred Bloggs" >> $GITHUB_ENV
+
+      - name: Get the NAME env variable value
+        run: echo "The NAME value is ${{ env.NAME }}"         
+        
+  print_unix_envvars:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Printout the environment variables
+        run: env   
+          
+  display_secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Printout the secret value
+        run: echo "This is the secret value ${{ secrets.MY_SECRET }}"  
+      - name: Printout the secret as environment variable
+        run: echo "This is TOP_SECRET $TOP_SECRET"
+        env:
+          TOP_SECRET: ${{ secrets.MY_SECRET }}
+          
+  share_secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Store a secret so it can be used by other steps in this job
+        run: |
+          SOME_SECRET=$((RANDOM))
+          # echo "::add-mask::$SOME_SECRET"
+          echo SOME_SECRET=$SOME_SECRET >> $GITHUB_ENV
+      - name: Printout the secret from the previous job
+        run: echo "This is SOME_SECRET $SOME_SECRET"
+ 
+  github_upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create artifact--file.txt
+        run: echo "Hello World" > file.txt
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: uploaded_content
+          path: file.txt
+          retention-days: 5
+    
+  github_download:
+    runs-on: ubuntu-latest
+    needs: github_upload
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: uploaded_content  
+      - name: Use downloaded artifact
+        run: cat file.txt      
+    
