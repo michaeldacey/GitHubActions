@@ -20,7 +20,7 @@ jobs:
       url: https://github.com
     steps:
       - name: Display secret
-        run: echo MY_SECRET is $MY_SECRET
+        run: echo "MY_SECRET is $MY_SECRET"
         
     
     
