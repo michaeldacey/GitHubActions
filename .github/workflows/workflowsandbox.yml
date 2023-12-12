@@ -127,3 +127,26 @@ jobs:
       - name: Printout the secret from the previous job
         run: echo "This is SOME_SECRET $SOME_SECRET"
  
+  github_upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create artifact--file.txt
+        run: echo "Hello World" > file.txt
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: uploaded_file.txt
+          path: file.txt
+          retention-days: 5
+    
+  github_download:
+    runs-on: ubuntu-latest
+    needs: github_upload
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: uploaded_file.txt  
+      - name: Use downloaded artifact
+        run: cat uploaded_file.txt      
+    
