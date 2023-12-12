@@ -135,7 +135,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: uploaded_file.txt
+          name: uploaded_file
           path: file.txt
           retention-days: 5
     
@@ -146,7 +146,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: uploaded_file.txt  
+          name: uploaded_file  
       - name: Use downloaded artifact
-        run: cat uploaded_file.txt      
+        run: cat file.txt      
     
