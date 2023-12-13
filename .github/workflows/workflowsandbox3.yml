@@ -1,0 +1,35 @@
+# This is a basic workflow to help you get started with Actions
+
+name: JobOutput
+
+# Controls when the workflow will run
+on:
+  # Only allow manual workflow execution
+  workflow_dispatch:
+
+
+jobs:
+
+  job1:
+    runs-on: ubuntu-latest
+    outputs:
+      the_message: ${{ steps.my-message.outputs.message }}
+      the_number: ${{ steps.my-number.outputs.some_number }}
+    steps:
+      - id: my-message
+        name: Set message value
+        run: echo "message=hello" >> "$GITHUB_OUTPUT"
+      - id: my-number
+        name: Set number value
+        run:  |
+          RND_NUMBER=$((RANDOM))
+          echo "some_number=$RND_NUMBER" >> "$GITHUB_OUTPUT"     
+    
+  job2:
+    runs-on: ubuntu-latest
+    needs: job1
+    steps:
+      - env:
+          MY_MESSAGE: ${{needs.job1.outputs.the_message}}
+          MY_NUMBER: ${{needs.job1.outputs.the_number}}
+        run: echo "$MY_MESSAGE $MY_NUMBER"
