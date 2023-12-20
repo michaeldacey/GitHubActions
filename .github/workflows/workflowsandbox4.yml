@@ -1,0 +1,12 @@
+name: SelfHostedRunnerDemo
+on:
+  workflow_dispatch:
+
+jobs:
+  run_it:
+    runs-on: [self-hosted, Linux, X64, ai-gpu]
+    steps:
+      - name: Echo a message
+        run: echo "This is script executing within our runner"
+      - name: Pause for demo purposes
+        run: sleep 100    
